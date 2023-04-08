@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+
+
+        <item
+            android:id="@+id/bluetooth"
+            android:icon="@drawable/bluetooth_foreground"
+            android:title="Pairing" />
+
+        <item
+            android:id="@+id/orientation_in"
+            android:icon="@drawable/orientation_input_foreground"
+            android:title="Angle Collection" />
+
+
+    </group>
+
+
+
+</menu>
