@@ -1,9 +1,16 @@
 package com.example.roboticarmjava.Fragments;
 
+import static com.example.roboticarmjava.BluetoothLeService.ACTION_ANGLES_READ;
+
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 
-import androidx.fragment.app.Fragment;
+import android.app.Fragment;
 
+import android.os.CountDownTimer;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -122,14 +129,6 @@ public class inp_out_orientation extends Fragment {
             @Override
             public void onClick(View view) {
                 bluetoothLeService.sendReadRequest();
-
-                String pitchInputFloat = pitchData.toString();
-                String rollInputFloat = yawData.toString();
-                String yawInputFloat = rollData.toString();
-
-                pitchToUser.setText(String.format("%.2f",pitchInputFloat));
-                rollToUser.setText(String.format("%.2f",pitchInputFloat));
-                yawToUser.setText(String.format("%.2f",pitchInputFloat));
             }
 
 
@@ -152,5 +151,27 @@ public class inp_out_orientation extends Fragment {
         return inflater.inflate(R.layout.fragment_inp_out_orientation, container, false);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(ACTION_ANGLES_READ);
+
+        getActivity().getApplicationContext().registerReceiver(updateReceiver, filter);
+    }
+    public final BroadcastReceiver updateReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            final String action = intent.getAction();
+
+            if (ACTION_ANGLES_READ.equals(action)) {
+                float[] angles = intent.getFloatArrayExtra(ACTION_ANGLES_READ);
+
+                pitchToUser.setText(String.format("%.2f", angles[0]));
+                rollToUser.setText(String.format("%.2f",angles[1]));
+                yawToUser.setText(String.format("%.2f",angles[2]));
+            }
+        }
+    };
 
 }

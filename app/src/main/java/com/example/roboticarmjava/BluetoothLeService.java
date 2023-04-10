@@ -17,40 +17,15 @@ import java.util.List;
 
 //johnny imports
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCallback;
 import android.bluetooth.BluetoothGattCharacteristic;
-import android.bluetooth.BluetoothGattDescriptor;
 import android.bluetooth.BluetoothGattService;
-import android.bluetooth.BluetoothManager;
-import android.bluetooth.BluetoothProfile;
-import android.bluetooth.le.BluetoothLeScanner;
 import android.bluetooth.le.ScanCallback;
 import android.bluetooth.le.ScanResult;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Environment;
-import android.os.Handler;
 import android.util.Log;
-import android.widget.ArrayAdapter;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.nio.ByteBuffer;
-import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
 
 
 public class BluetoothLeService extends GATT_UUIDS {
@@ -160,7 +135,7 @@ public class BluetoothLeService extends GATT_UUIDS {
             }
             try{
                 Log.e("Found device", result.getDevice().getName());
-                if (result.getDevice().getName().contains("Monitor")) {
+                if (result.getDevice().getName()!=null) {
                     int rssi = result.getRssi();
                     if (mBluetoothDevices.contains(result.getDevice())){
                         int index = mBluetoothDevices.indexOf(result.getDevice());
@@ -203,7 +178,7 @@ public class BluetoothLeService extends GATT_UUIDS {
         @Override
         public void onCharacteristicRead(@NonNull BluetoothGatt gatt, @NonNull BluetoothGattCharacteristic characteristic, @NonNull byte[] value, int status) {
             super.onCharacteristicRead(gatt, characteristic, value, status);
-            if (characteristic.getUuid().equals(UUID_INFO_READ)){
+            if (characteristic.getUuid().equals(UUID_tx_char)){
                 byte[] emptyArray = new byte[]{-1,-1,-1,-1,-1,-1};
                 byte[] rollDataB = new byte[]{characteristic.getValue()[0],characteristic.getValue()[1]};
                 float rollData =  convertADC(rollDataB);
@@ -211,9 +186,9 @@ public class BluetoothLeService extends GATT_UUIDS {
                 float pitchData =  convertADC(pitchDataB);
                 byte[] yawDataB = new byte[]{characteristic.getValue()[4],characteristic.getValue()[5]};
                 float yawData =  convertADC(yawDataB);
-                broadcastUpdate(ACTION_ANGLES_READ, pitchData);
-                broadcastUpdate(ACTION_ANGLES_READ, rollData);
-                broadcastUpdate(ACTION_ANGLES_READ, yawData);
+                float[] arr = new float[]{pitchData, rollData, yawData};
+                broadcastUpdate(ACTION_ANGLES_READ, arr);
+
             }
         }
 
@@ -243,8 +218,8 @@ public class BluetoothLeService extends GATT_UUIDS {
         if (digits < 0) {
             digits += 256;
         }
-        int tens = adcRawVal[1];
-        float rawVal = digits + tens * 256;
+        int tens = adcRawVal[1] < 0?adcRawVal[1]+256:adcRawVal[1];
+        float rawVal = digits + tens/100;
         return rawVal;
     }
     @SuppressLint("MissingPermission")
@@ -260,7 +235,7 @@ public class BluetoothLeService extends GATT_UUIDS {
     public void sendWriteRequest(byte[] arr){
         if (mBluetoothGatt != null) {
             BluetoothGattCharacteristic characteristic =
-                    mBluetoothGatt.getService(UUID_IDENTIFIER_SERV).getCharacteristic(UUID_IDENTIFIER_VAL);
+                    mBluetoothGatt.getService(UUID_IDENTIFIER_SERV).getCharacteristic(UUID_rx_char);
             if (characteristic != null) {
                 try{
                     characteristic.setValue(arr);
@@ -279,18 +254,9 @@ public class BluetoothLeService extends GATT_UUIDS {
         if (mBluetoothGatt != null) {
 
             BluetoothGattCharacteristic characteristic =
-                    mBluetoothGatt.getService(UUID_IDENTIFIER_SERV).getCharacteristic(UUID_IDENTIFIER_VAL);
-            if (characteristic != null) {
-                try{
+                    mBluetoothGatt.getService(UUID_IDENTIFIER_SERV).getCharacteristic(UUID_tx_char);
+            mBluetoothGatt.readCharacteristic(characteristic);
 
-                    BluetoothGattService service = mBluetoothGatt.getService(UUID_INFO_READ);
-                    mBluetoothGatt.readCharacteristic(service.getCharacteristic(UUID_INFO_READ));
-
-                }
-                catch (Exception e) {
-
-                }
-            }
         }
     }
 
@@ -300,6 +266,11 @@ public class BluetoothLeService extends GATT_UUIDS {
         context.sendBroadcast(intent);
     }
     private void broadcastUpdate(final String action, float data) {
+        final Intent intent = new Intent(action);
+        intent.putExtra(action, data);
+        context.sendBroadcast(intent);
+    }
+    private void broadcastUpdate(final String action, float[] data) {
         final Intent intent = new Intent(action);
         intent.putExtra(action, data);
         context.sendBroadcast(intent);
