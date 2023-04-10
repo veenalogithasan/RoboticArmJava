@@ -1,192 +1,171 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
-    tools:context=".MainActivity">
+    android:background="@color/transparent_grey"
+    tools:context="com.example.roboticarmjava.Fragments.inp_out_orientation">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="96dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="96dp"
-        android:fontFamily="sans-serif-black"
-        android:text="Input Desired Angles"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="Input Desired Angles" />
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginTop="10dp"
+        android:background="@android:color/white">
 
-    <EditText
-        android:id="@+id/RollInput"
-        android:layout_width="80dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="80dp"
-        android:ems="10"
-        android:hint="Roll"
-        android:inputType="none|number|numberDecimal"
-        app:layout_constraintEnd_toStartOf="@+id/YawInput"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/PitchInput"
-        app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:layout_centerHorizontal="true"
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-black"
+            android:textAlignment="center"
+            android:text="Input Desired Angles"
+            android:layout_marginTop="25dp"
+            android:textSize="20sp" />
 
-    <EditText
-        android:id="@+id/YawInput"
-        android:layout_width="80dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="80dp"
-        android:ems="10"
-        android:hint="Yaw"
-        android:inputType="number|numberDecimal"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/RollInput"
-        app:layout_constraintTop_toTopOf="parent" />
+        <RelativeLayout
+            android:id="@+id/relativeLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textView"
+            android:layout_centerHorizontal="true">
 
-    <EditText
-        android:id="@+id/PitchInput"
-        android:layout_width="80dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="80dp"
-        android:ems="10"
-        android:hint="Pitch"
-        android:inputType="none|number|numberDecimal"
-        app:layout_constraintEnd_toStartOf="@+id/RollInput"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+            <EditText
+                android:id="@+id/RollInput"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="Roll"
+                android:inputType="none|number|numberDecimal"
+                android:layout_toEndOf="@+id/PitchInput"
+                android:layout_marginEnd="40dp"
+                android:textSize="16sp"/>
 
-    <ImageButton
-        android:id="@+id/start"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="210dp"
-        android:clickable="true"
-        android:onClick="start"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:drawable/ic_media_play" />
+            <EditText
+                android:id="@+id/YawInput"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="Yaw"
+                android:inputType="number|numberDecimal"
+                android:layout_toEndOf="@+id/RollInput"
+                android:textSize="16sp" />
 
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="500dp"
-        android:layout_marginEnd="24dp"
-        android:fontFamily="sans-serif-black"
-        android:gravity="center_horizontal"
-        android:text="Actual Angles of Rotation"
-        android:textSize="20sp"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
-        tools:visibility="visible" />
+            <EditText
+                android:id="@+id/PitchInput"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="Pitch"
+                android:inputType="none|number|numberDecimal"
+                android:layout_marginEnd="40dp"
+                android:textSize="16sp"/>
 
-    <TextView
-        android:id="@+id/ActualPitch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:hint="Actual Pitch"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/ActualRoll"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/ActualRoll"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:hint="Actual Roll"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/ActualYaw"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/ActualPitch"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/ActualYaw"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:hint="Actual Yaw"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/ActualRoll"
-        app:layout_constraintTop_toTopOf="@+id/ActualRoll" />
-
-    <TextView
-        android:id="@+id/textView11"
-        android:layout_width="56dp"
-        android:layout_height="21dp"
-        android:layout_marginTop="100dp"
-        android:gravity="center_horizontal"
-        android:text="Pitch"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/textView12"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/textView12"
-        android:layout_width="78dp"
-        android:layout_height="20dp"
-        android:gravity="center_horizontal"
-        android:text="Roll"
-        app:layout_constraintEnd_toStartOf="@+id/textView13"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/textView11"
-        app:layout_constraintTop_toTopOf="@+id/textView11" />
-
-    <TextView
-        android:id="@+id/textView13"
-        android:layout_width="66dp"
-        android:layout_height="18dp"
-        android:gravity="center_horizontal"
-        android:text="Yaw"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/textView12"
-        app:layout_constraintTop_toTopOf="@+id/textView12" />
-
-    <Button
-        android:id="@+id/neutral"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="150dp"
-        android:text="Return To Neutral"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/receiveAngle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="100dp"
-        android:text="Receive Angles"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        </RelativeLayout>
 
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <Button
+            android:id="@+id/start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/relativeLayout"
+            android:text="Start" />
+
+        <Button
+            android:id="@+id/neutral"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="Return To Neutral"
+            android:layout_below="@+id/start"/>
+
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/neutral"
+            android:layout_marginTop="40dp"
+            android:fontFamily="sans-serif-black"
+            android:gravity="center_horizontal"
+            android:layout_centerHorizontal="true"
+            android:text="Actual Angles of Rotation"
+            android:textSize="20sp"
+            android:visibility="visible"
+            tools:visibility="visible" />
+
+        <TextView
+            android:id="@+id/ActualPitch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textView3"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="50dp"
+            android:layout_marginEnd="30dp"
+            android:hint="Actual Pitch"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/ActualRoll"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:layout_below="@id/textView3"
+            android:layout_marginEnd="30dp"
+            android:layout_toEndOf="@+id/ActualPitch"
+            android:hint="Actual Roll"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/ActualYaw"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Actual Yaw"
+            android:textSize="18sp"
+            android:layout_marginTop="50dp"
+            android:layout_below="@id/textView3"
+            android:layout_toEndOf="@+id/ActualRoll"/>
+
+        <TextView
+            android:id="@+id/textView11"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:layout_marginStart="50dp"
+            android:layout_marginTop="20dp"
+            android:text="Pitch"
+            android:layout_marginEnd="90dp"
+            android:layout_below="@id/ActualPitch"/>
+
+        <TextView
+            android:id="@+id/textView12"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="Roll"
+            android:layout_below="@id/ActualRoll"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="90dp"
+            android:layout_toEndOf="@+id/textView11"/>
+
+        <TextView
+            android:id="@+id/textView13"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="Yaw"
+            android:layout_below="@id/ActualYaw"
+            android:layout_marginTop="20dp"
+            android:layout_toEndOf="@+id/textView12"/>
+
+
+        <Button
+            android:id="@+id/receiveAngle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Receive Angles"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="50dp"
+            android:layout_below="@id/textView12"/>
+
+
+    </RelativeLayout>
+</FrameLayout>

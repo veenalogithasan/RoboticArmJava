@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.app.Fragment;
 
 import android.os.CountDownTimer;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,52 +23,8 @@ import com.example.roboticarmjava.BluetoothLeService;
 import com.example.roboticarmjava.MainActivity;
 import com.example.roboticarmjava.R;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link inp_out_orientation#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class inp_out_orientation extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public inp_out_orientation() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment inp_out_orientation.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static inp_out_orientation newInstance(String param1, String param2) {
-        inp_out_orientation fragment = new inp_out_orientation();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
     View rootView;
     TextView roll;
     TextView yaw;
@@ -78,7 +35,7 @@ public class inp_out_orientation extends Fragment {
     TextView rollToUser;
     TextView yawToUser;
 
-    ImageButton start;
+    Button start;
     Button receive;
     Button reset;
 
@@ -87,11 +44,11 @@ public class inp_out_orientation extends Fragment {
     float yawReset = 0;
 
     BluetoothLeService bluetoothLeService;
-    //TODO: RECEIVE BROADCAST
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        rootView = inflater.inflate(R.layout.fragment_inp_out_orientation, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_inp_out_orientation, container, false);
 
         pitch = rootView.findViewById(R.id.PitchInput);
         roll = rootView.findViewById(R.id.RollInput);
@@ -110,6 +67,7 @@ public class inp_out_orientation extends Fragment {
         start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.v("click received", "click received");
                 String pitchString = pitch.getText().toString();
                 String rollString = roll.getText().toString();
                 String yawString = yaw.getText().toString();
@@ -138,6 +96,7 @@ public class inp_out_orientation extends Fragment {
         reset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.v("click received", "click received");
                 byte[] arr = new byte[]{(byte) pitchReset, (byte)((pitchReset - (byte)pitchReset)*100),
                         (byte) rollReset, (byte)((rollReset - (byte)rollReset)*100),
                         (byte) yawReset, (byte)((yawReset - (byte)yawReset)*100)
@@ -148,7 +107,8 @@ public class inp_out_orientation extends Fragment {
 
         });
 
-        return inflater.inflate(R.layout.fragment_inp_out_orientation, container, false);
+        //return inflater.inflate(R.layout.fragment_inp_out_orientation, container, false);
+        return rootView;
     }
 
     @Override

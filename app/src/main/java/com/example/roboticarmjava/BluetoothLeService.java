@@ -24,6 +24,7 @@ import android.bluetooth.le.ScanCallback;
 import android.bluetooth.le.ScanResult;
 import android.content.Intent;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -198,14 +199,17 @@ public class BluetoothLeService extends GATT_UUIDS {
         scanner.stopScan(scan_callback);
         mScanning = false;
         initializing = true;
+        Log.v("initializing", "initializing");
         BluetoothDevice device = mBluetoothDevices.get(deviceNum);
         if (initBluetooth()) {
             if (mBluetoothGatt == null) {
+                Log.v("null", "null");
                 mBluetoothGatt = device.connectGatt(context, false,
                         mGattCallback);
 
             }
             else{
+                Log.v("not null", "not null");
                 terminateConnection();
                 initBluetooth();
                 mBluetoothGatt = device.connectGatt(context, false, mGattCallback);
@@ -236,17 +240,20 @@ public class BluetoothLeService extends GATT_UUIDS {
         if (mBluetoothGatt != null) {
             BluetoothGattCharacteristic characteristic =
                     mBluetoothGatt.getService(UUID_IDENTIFIER_SERV).getCharacteristic(UUID_rx_char);
+                    Log.v("bluetooth not null", "bluetooth not null");
             if (characteristic != null) {
                 try{
                     characteristic.setValue(arr);
-
                     mBluetoothGatt.writeCharacteristic(characteristic);
+                    Log.v("Angles sent", "Angles sent");
                 }
                 catch (Exception e) {
+                    Log.v("Angles not sent", "Angles not sent");
 
                 }
             }
         }
+        Log.v("bluetooth null", "bluetooth null");
     }
 
     @SuppressLint("MissingPermission")
@@ -279,4 +286,19 @@ public class BluetoothLeService extends GATT_UUIDS {
         return mBluetoothListAdapter;
     }
 
+    public void makeToast(final String message) {
+        ((Activity) context).runOnUiThread(new Runnable() {
+            public void run() {
+                final Toast jam = Toast.makeText(context, message, Toast.LENGTH_LONG);
+                jam.show();
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        jam.cancel();
+                    }
+                }, 3000);
+            }
+        });
+    }
 }
